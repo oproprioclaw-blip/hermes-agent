@@ -7,10 +7,11 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 WORKDIR /app
 
-RUN git clone --recurse-submodules https://github.com/oproprioclaw-blip/hermes-agent.git .
+RUN git submodule update --init --recursive
 
 RUN uv venv .venv && \
     . .venv/bin/activate && \
-    uv pip install -e ".[all]"
+    uv pip install -e ".[all]" && \
+    uv pip install -e "./mini-swe-agent"
 
 CMD ["hermes", "gateway", "--toolsets", "web"]
